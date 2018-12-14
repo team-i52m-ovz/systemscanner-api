@@ -1,14 +1,31 @@
 package com.systemscanner.api.config;
 
+import com.systemscanner.api.component.JwtBuilder;
+import com.systemscanner.api.utils.HttpProperties;
+import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+	private final JwtBuilder jwtBuilder;
+	private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -18,8 +35,42 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()
+				.exceptionHandling()
+				.authenticationEntryPoint(new RestAuthenticationEntryPoint())
+				.and()
+				.addFilterBefore(jwtAuthorizationFilter, JwtAuthenticationFilter.class)
 				.authorizeRequests()
+				.antMatchers("/auth/**", "/rat/**")
+				.permitAll()
 				.anyRequest()
-				.permitAll();
+				.authenticated();
+	}
+
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
+		JwtAuthenticationFilter filter = new JwtAuthenticationFilter(this.jwtBuilder);
+		filter.setAuthenticationManager(authenticationManagerBean());
+		filter.setFilterProcessesUrl("/auth/login");
+		return filter;
+	}
+
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		final CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Collections.singletonList("*"));
+		configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
+		configuration.setAllowCredentials(true);
+		configuration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CACHE_CONTROL,
+				HttpHeaders.CONTENT_TYPE, HttpProperties.HttpHeaders.SCANNER_PID, HttpProperties.HttpHeaders.SCANNER_TOKEN));
+		configuration.addExposedHeader(HttpHeaders.AUTHORIZATION);
+		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
+
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
 	}
 }
