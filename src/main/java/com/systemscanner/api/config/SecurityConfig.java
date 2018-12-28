@@ -25,13 +25,15 @@ import java.util.Collections;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final JwtBuilder jwtBuilder;
+	//	private final BasicAuthFilter basicAuthFilter;
 	private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-				.cors().and().csrf()
-				.disable()
+				.cors().configurationSource(corsConfigurationSource())
+				.and()
+				.csrf().disable()
 				.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 				.and()

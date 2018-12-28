@@ -6,6 +6,8 @@ import com.systemscanner.api.service.SignupService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @CrossOrigin
 @RestController
 @AllArgsConstructor
@@ -15,7 +17,7 @@ public class SingupController {
 	private final SignupService signupService;
 
 	@PostMapping("/signup")
-	public UserLight signup(@RequestBody SignupDTO signupDTO) {
+	public UserLight signup(@Valid @RequestBody SignupDTO signupDTO) {
 		return this.signupService.signup(signupDTO);
 	}
 }
