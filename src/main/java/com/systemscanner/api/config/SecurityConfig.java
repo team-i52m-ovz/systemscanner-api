@@ -3,8 +3,10 @@ package com.systemscanner.api.config;
 import com.systemscanner.api.component.JwtBuilder;
 import com.systemscanner.api.utils.HttpProperties;
 import lombok.RequiredArgsConstructor;
+import lombok.val;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,6 +20,10 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
+import static org.springframework.http.HttpMethod.*;
 
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -25,7 +31,6 @@ import java.util.Collections;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 	private final JwtBuilder jwtBuilder;
-	//	private final BasicAuthFilter basicAuthFilter;
 	private final JwtAuthorizationFilter jwtAuthorizationFilter;
 
 	@Override
@@ -60,12 +65,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 		final CorsConfiguration configuration = new CorsConfiguration();
+		val allowedHttpMethods = Stream.of(HEAD, GET, POST, PUT, DELETE, PATCH)
+				.map(HttpMethod::toString)
+				.collect(toList());
+
 		configuration.setAllowedOrigins(Collections.singletonList("*"));
-		configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT", "DELETE", "PATCH"));
+		configuration.setAllowedMethods(allowedHttpMethods);
 		configuration.setAllowCredentials(true);
 		configuration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CACHE_CONTROL,
 				HttpHeaders.CONTENT_TYPE, HttpProperties.HttpHeaders.SCANNER_PID, HttpProperties.HttpHeaders.SCANNER_TOKEN));
 		configuration.addExposedHeader(HttpHeaders.AUTHORIZATION);
+
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
 		return source;
