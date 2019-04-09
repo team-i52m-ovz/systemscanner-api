@@ -9,14 +9,8 @@ import javax.validation.constraints.NotEmpty;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignupDTO {
+public class ScannerInstanceDTO {
 
 	@NotEmpty
-	private String username;
-
-	@NotEmpty
-	private String email;
-
-	@NotEmpty
-	private String password;
+	private String pid;
 }
