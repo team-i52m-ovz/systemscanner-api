@@ -1,4 +1,4 @@
-package com.systemscanner.api.repository;
+package com.systemscanner.api.repository.jpa;
 
 import com.systemscanner.api.model.entity.Report;
 import com.systemscanner.api.model.projection.ReportLight;

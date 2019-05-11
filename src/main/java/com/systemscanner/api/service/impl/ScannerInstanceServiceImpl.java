@@ -3,8 +3,8 @@ package com.systemscanner.api.service.impl;
 import com.systemscanner.api.model.entity.ScannerInstance;
 import com.systemscanner.api.model.entity.User;
 import com.systemscanner.api.model.projection.ScannerInstanceLight;
-import com.systemscanner.api.repository.ScannerInstanceRepository;
-import com.systemscanner.api.repository.UserRepository;
+import com.systemscanner.api.repository.jpa.ScannerInstanceRepository;
+import com.systemscanner.api.repository.jpa.UserRepository;
 import com.systemscanner.api.service.ScannerInstanceService;
 import lombok.AllArgsConstructor;
 import lombok.val;
@@ -12,10 +12,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Function;
 
 @Service
 @AllArgsConstructor

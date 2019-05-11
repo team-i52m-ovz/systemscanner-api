@@ -1,4 +1,4 @@
-package com.systemscanner.api.repository;
+package com.systemscanner.api.repository.jpa;
 
 import com.systemscanner.api.model.entity.ScannerInstance;
 import com.systemscanner.api.model.projection.ScannerInstanceLight;

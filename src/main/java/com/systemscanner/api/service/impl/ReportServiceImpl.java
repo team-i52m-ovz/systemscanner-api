@@ -1,7 +1,7 @@
 package com.systemscanner.api.service.impl;
 
 import com.systemscanner.api.model.projection.ReportLight;
-import com.systemscanner.api.repository.ReportRepository;
+import com.systemscanner.api.repository.jpa.ReportRepository;
 import com.systemscanner.api.service.ReportService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

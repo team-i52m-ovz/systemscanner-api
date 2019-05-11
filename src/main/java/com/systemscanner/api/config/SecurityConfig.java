@@ -50,7 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/auth/**", "/rat/**")
 				.permitAll()
 				.anyRequest()
-				.authenticated();
+				.permitAll();
 	}
 
 	@Bean
