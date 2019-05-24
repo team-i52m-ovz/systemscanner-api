@@ -1,4 +1,4 @@
-package com.systemscanner.api.repository;
+package com.systemscanner.api.repository.jpa;
 
 import com.systemscanner.api.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

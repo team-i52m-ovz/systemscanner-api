@@ -3,7 +3,7 @@ package com.systemscanner.api.service.impl;
 import com.systemscanner.api.model.dto.SignupDTO;
 import com.systemscanner.api.model.entity.User;
 import com.systemscanner.api.model.projection.UserLight;
-import com.systemscanner.api.repository.UserRepository;
+import com.systemscanner.api.repository.jpa.UserRepository;
 import com.systemscanner.api.service.SignupService;
 import lombok.AllArgsConstructor;
 import lombok.val;

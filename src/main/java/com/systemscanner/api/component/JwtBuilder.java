@@ -15,16 +15,19 @@ import org.springframework.stereotype.Component;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
 import java.util.stream.Collectors;
+
+import static com.systemscanner.api.utils.HttpProperties.TokenUtils.AUTHORITIES_KEY;
+import static com.systemscanner.api.utils.HttpProperties.TokenUtils.JWT_PREFIX;
+import static com.systemscanner.api.utils.StringUtils.BLANK;
+import static com.systemscanner.api.utils.StringUtils.COMMA;
 
 @Component
 public class JwtBuilder {
-	private static final String TOKEN_PREFIX = "Bearer ";
-	private static final String AUTHORITIES_KEY = "roles";
-	private static final String BLANK = "";
-	private static final String COMMA_DELIMITER = ",";
-
 	@Value("${api.token.max-age}")
 	private Long tokenMaxAge;
 
@@ -34,7 +37,7 @@ public class JwtBuilder {
 	public String buildJWT(Authentication auth) {
 		String authorities = auth.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.joining(COMMA_DELIMITER));
+				.collect(Collectors.joining(COMMA));
 
 		val issuedAt = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC);
 		val jwt = Jwts.builder()
@@ -44,21 +47,21 @@ public class JwtBuilder {
 				.setExpiration(Date.from(issuedAt.plusMinutes(tokenMaxAge).toInstant(ZoneOffset.UTC)))
 				.signWith(SignatureAlgorithm.HS256, tokenSecret)
 				.compact();
-		return TOKEN_PREFIX + jwt;
+		return JWT_PREFIX + jwt;
 	}
 
 	public String getAuthorities(Authentication authentication) {
 		return authentication.getAuthorities().stream()
 				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.joining(COMMA_DELIMITER));
+				.collect(Collectors.joining(COMMA));
 	}
 
 	public Authentication getAuthentication(String token) {
-		val jwt = token.replace(TOKEN_PREFIX, BLANK);
+		val jwt = token.replace(JWT_PREFIX, BLANK);
 		Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(jwt).getBody();
 
 		Collection<? extends GrantedAuthority> authorities =
-				Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(COMMA_DELIMITER))
+				Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(COMMA))
 						.filter(s -> !s.equals(BLANK))
 						.map(SimpleGrantedAuthority::new).collect(Collectors.toList());
 

@@ -1,6 +1,6 @@
 package com.systemscanner.api.component;
 
-import com.systemscanner.api.repository.UserRepository;
+import com.systemscanner.api.repository.jpa.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;

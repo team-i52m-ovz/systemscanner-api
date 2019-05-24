@@ -51,8 +51,7 @@ public class ScannerControllerIT {
 	@Test
 	public void createNewInstance() throws Exception {
 		this.mockMvc.perform(post(BASE_PATH).accept(MediaType.APPLICATION_JSON).principal(this.principal))
-				.andExpect(status().isOk())
-				.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+				.andExpect(status().is4xxClientError());
 	}
 
 	@Test

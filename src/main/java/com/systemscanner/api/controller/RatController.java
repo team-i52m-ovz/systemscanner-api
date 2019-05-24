@@ -1,16 +1,13 @@
 package com.systemscanner.api.controller;
 
-import com.systemscanner.api.model.dto.RatReportDTO;
+import com.systemscanner.api.model.mongo.ReportInfo;
 import com.systemscanner.api.service.RatService;
-import com.systemscanner.api.utils.HttpProperties;
 import lombok.AllArgsConstructor;
-import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.Objects;
-import java.util.Optional;
+import static com.systemscanner.api.utils.HttpProperties.HttpHeaders.SCANNER;
 
 @CrossOrigin
 @RestController
@@ -21,15 +18,10 @@ public class RatController {
 	private final RatService ratService;
 
 	@PostMapping
-	public ResponseEntity<?> createReport(@Param(HttpProperties.HttpHeaders.SCANNER_PID) String scannerPid,
-										  @Param(HttpProperties.HttpHeaders.SCANNER_TOKEN) String scannerToken,
-										  @Valid @RequestBody RatReportDTO ratReportDTO) {
-		return Optional.ofNullable(scannerPid)
-				.filter(f -> Objects.nonNull(scannerToken))
-				.map(i -> {
-					this.ratService.createReport(ratReportDTO, scannerPid, scannerToken);
-					return ResponseEntity.noContent().build();
-				})
-				.orElse(ResponseEntity.badRequest().build());
+	public ResponseEntity<?> createReport(@RequestBody ReportInfo reportInfo,
+										  @RequestHeader(SCANNER) String scannerAuthentication) {
+		return this.ratService.createReport(reportInfo, scannerAuthentication)
+				.map(r -> ResponseEntity.accepted().build())
+				.orElse(ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 }

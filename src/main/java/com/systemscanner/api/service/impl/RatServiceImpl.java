@@ -1,13 +1,12 @@
 package com.systemscanner.api.service.impl;
 
-import com.systemscanner.api.model.dto.RatReportDTO;
-import com.systemscanner.api.model.entity.Report;
 import com.systemscanner.api.model.entity.ScannerInstance;
-import com.systemscanner.api.repository.ReportRepository;
-import com.systemscanner.api.repository.ScannerInstanceRepository;
+import com.systemscanner.api.model.mongo.Report;
+import com.systemscanner.api.model.mongo.ReportInfo;
+import com.systemscanner.api.repository.jpa.ScannerInstanceRepository;
+import com.systemscanner.api.repository.mongo.ReportMongoRepository;
 import com.systemscanner.api.service.RatService;
 import lombok.AllArgsConstructor;
-import lombok.val;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -17,22 +16,23 @@ import java.util.Optional;
 @AllArgsConstructor
 public class RatServiceImpl implements RatService {
 
+	private final ScannerAuthenticator scannerAuthenticator;
+	private final ReportMongoRepository reportMongoRepository;
 	private final ScannerInstanceRepository scannerInstanceRepository;
-	private final ReportRepository reportRepository;
 
 	@Override
-	public Report createReport(RatReportDTO ratReportDTO, String scannerPid, String scannerToken) {
-		return scannerInstanceRepository.findByPidAndSecurityKey(scannerPid, scannerPid)
-				.map(this::saveInternal)
-				.orElseThrow(IllegalArgumentException::new);
+	public Optional<Report> createReport(ReportInfo reportInfo, String scannerToken) {
+		return this.scannerAuthenticator.getPidTokenPair(scannerToken)
+				.flatMap(pidTokenPair -> scannerInstanceRepository.findByPidAndSecurityKey(pidTokenPair.getFirst(), pidTokenPair.getSecond()))
+				.map(scanner -> this.buildReport(reportInfo, scanner))
+				.map(reportMongoRepository::save);
 	}
 
-	// TODO: Implement properly when valid data is provided
-	private Report saveInternal(ScannerInstance scannerInstance) {
-		val report = Report.builder()
-				.created(Instant.now())
-				.scannerInstance(scannerInstance)
+	private Report buildReport(ReportInfo reportInfo, ScannerInstance scanner) {
+		return Report.builder()
+				.scannerPid(scanner.getPid())
+				.createdAt(Instant.now())
+				.details(reportInfo)
 				.build();
-		return this.reportRepository.saveAndFlush(report);
 	}
 }
