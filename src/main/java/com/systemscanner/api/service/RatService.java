@@ -1,8 +1,12 @@
 package com.systemscanner.api.service;
 
-import com.systemscanner.api.model.dto.RatReportDTO;
-import com.systemscanner.api.model.entity.Report;
+import com.systemscanner.api.model.mongo.Report;
+import com.systemscanner.api.model.mongo.ReportInfo;
+
+import java.util.Optional;
 
 public interface RatService {
-	Report createReport(RatReportDTO ratReportDTO, String scannerPid, String scannerToken);
+
+	Optional<Report> createReport(ReportInfo reportInfo, String authentication);
+
 }

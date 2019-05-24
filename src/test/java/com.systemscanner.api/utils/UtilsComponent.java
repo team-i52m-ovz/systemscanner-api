@@ -1,7 +1,7 @@
 package com.systemscanner.api.utils;
 
 import com.systemscanner.api.model.entity.User;
-import com.systemscanner.api.repository.UserRepository;
+import com.systemscanner.api.repository.jpa.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

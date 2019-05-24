@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Stream;
 
+import static com.systemscanner.api.utils.HttpProperties.PublicEndpoints.*;
 import static java.util.stream.Collectors.toList;
 import static org.springframework.http.HttpMethod.*;
 
@@ -47,10 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.addFilterBefore(jwtAuthorizationFilter, JwtAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers("/auth/**", "/rat/**")
+				.antMatchers(AUTH_ENDPOINTS, RAT_ENDPOINTS)
+				.permitAll()
+				.antMatchers(SWAGGER_ENDPOINTS)
 				.permitAll()
 				.anyRequest()
-				.permitAll();
+				.authenticated();
 	}
 
 	@Bean
@@ -73,7 +76,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		configuration.setAllowedMethods(allowedHttpMethods);
 		configuration.setAllowCredentials(true);
 		configuration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CACHE_CONTROL,
-				HttpHeaders.CONTENT_TYPE, HttpProperties.HttpHeaders.SCANNER_PID, HttpProperties.HttpHeaders.SCANNER_TOKEN));
+				HttpHeaders.CONTENT_TYPE, HttpProperties.HttpHeaders.SCANNER_PID, HttpProperties.HttpHeaders.SCANNER_TOKEN,
+				HttpProperties.HttpHeaders.SCANNER));
 		configuration.addExposedHeader(HttpHeaders.AUTHORIZATION);
 
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

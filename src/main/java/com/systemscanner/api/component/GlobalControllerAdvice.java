@@ -15,4 +15,10 @@ public class GlobalControllerAdvice {
 	public ErrorMessage handleDataIntegrityViolation(DataIntegrityViolationException ex) {
 		return () -> String.format("Invalid form value: %s", ex.getMessage());
 	}
+
+	@ResponseStatus(HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ErrorMessage handleIllegalArgumentException(IllegalArgumentException ex) {
+		return () -> String.format("Error: %s", ex.getMessage());
+	}
 }

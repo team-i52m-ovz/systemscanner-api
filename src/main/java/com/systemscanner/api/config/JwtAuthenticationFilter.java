@@ -47,8 +47,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	@Override
 	protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 											  AuthenticationException ex) throws IOException {
-		log.error(ex.getMessage());
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, ex.getMessage());
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid username or password");
 	}
 
 	@Getter

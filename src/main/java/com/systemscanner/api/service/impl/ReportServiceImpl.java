@@ -1,21 +1,40 @@
 package com.systemscanner.api.service.impl;
 
+import com.systemscanner.api.model.mongo.Report;
 import com.systemscanner.api.model.projection.ReportLight;
-import com.systemscanner.api.repository.jpa.ReportRepository;
+import com.systemscanner.api.model.projection.ScannerInstanceLight;
+import com.systemscanner.api.repository.jpa.ScannerInstanceRepository;
+import com.systemscanner.api.repository.mongo.ReportMongoRepository;
 import com.systemscanner.api.service.ReportService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 @Service
 @AllArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
-	private final ReportRepository reportRepository;
+	private final ReportMongoRepository mongoRepository;
+	private final ScannerInstanceRepository scannerInstanceRepository;
 
 	@Override
-	public Set<ReportLight> findAllForCurrentUser(String pid, String username) {
-		return this.reportRepository.findAllForUser(pid, username);
+	public Page<ReportLight> findAllForCurrentUser(String pid, String username, Pageable pageable) {
+		return this.scannerInstanceRepository.findOneByUserAndPid(username, pid)
+				.map(ScannerInstanceLight::getPid)
+				.map(sci -> this.mongoRepository.findAllByScannerPid(sci, pageable))
+				.orElse(Page.empty());
+	}
+
+	@Override
+	public Optional<Report> findById(String id, String username) {
+		Predicate<Report> authorized = report ->
+				this.scannerInstanceRepository.findOneByUserAndPid(username, report.getScannerPid()).isPresent();
+
+		return this.mongoRepository.findById(id)
+				.filter(authorized);
 	}
 }

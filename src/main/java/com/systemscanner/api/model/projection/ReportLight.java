@@ -1,15 +1,12 @@
 package com.systemscanner.api.model.projection;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import java.time.Instant;
 
 public interface ReportLight {
 
-	Long getId();
+	String getId();
 
-	@Value("#{target.scannerInstance.pid}")
-	String getInstancePid();
+	String getScannerPid();
 
-	Instant getCreated();
+	Instant getCreatedAt();
 }

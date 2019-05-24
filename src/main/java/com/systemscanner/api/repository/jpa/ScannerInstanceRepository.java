@@ -17,5 +17,11 @@ public interface ScannerInstanceRepository extends JpaRepository<ScannerInstance
 			" OR LOWER(user.email) = LOWER(:userUid)")
 	Set<ScannerInstanceLight> findAllForUser(@Param("userUid") String userUid);
 
+	@Query("SELECT new ScannerInstance(sci.pid, sci.securityKey) FROM User user " +
+			" JOIN user.scannerInstances sci" +
+			" WHERE sci.pid = :pid" +
+			" AND (LOWER(user.username) = LOWER(:userUid) OR LOWER(user.email) = LOWER(:userUid))")
+	Optional<ScannerInstanceLight> findOneByUserAndPid(@Param("userUid") String userUid, @Param("pid") String pid);
+
 	Optional<ScannerInstance> findByPidAndSecurityKey(String pid, String securityKey);
 }
