@@ -50,12 +50,6 @@ public class JwtBuilder {
 		return JWT_PREFIX + jwt;
 	}
 
-	public String getAuthorities(Authentication authentication) {
-		return authentication.getAuthorities().stream()
-				.map(GrantedAuthority::getAuthority)
-				.collect(Collectors.joining(COMMA));
-	}
-
 	public Authentication getAuthentication(String token) {
 		val jwt = token.replace(JWT_PREFIX, BLANK);
 		Claims claims = Jwts.parser().setSigningKey(tokenSecret).parseClaimsJws(jwt).getBody();
