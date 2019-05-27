@@ -1,9 +1,9 @@
 package com.systemscanner.api.service.impl;
 
-import org.bson.internal.Base64;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
+import java.util.Base64;
 import java.util.Optional;
 
 import static com.systemscanner.api.utils.HttpProperties.TokenUtils.BASIC_AUTH_PARTS;
@@ -17,7 +17,7 @@ public class ScannerAuthenticator {
 	public Optional<Pair<String, String>> getPidTokenPair(String ratToken) {
 		return Optional.ofNullable(ratToken)
 				.map(token -> token.replaceAll(BASIC_AUTH_PREFIX, BLANK))
-				.map(Base64::decode)
+				.map(token -> Base64.getDecoder().decode(token))
 				.map(String::new)
 				.map(token -> token.split(COLON))
 				.filter(parts -> BASIC_AUTH_PARTS.equals(parts.length))
