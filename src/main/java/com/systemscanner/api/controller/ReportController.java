@@ -6,7 +6,6 @@ import com.systemscanner.api.model.projection.ReportLight;
 import com.systemscanner.api.service.ReportService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -24,10 +23,9 @@ public class ReportController {
 
 	@PostMapping
 	public Page<ReportLight> findAllForCurrentInstance(@Valid @RequestBody ReportRestFilter instance,
-													   Authentication authentication) {
-		Pageable pageRequest = PageRequest.of(instance.getPage(), instance.getSize());
-
-		return this.reportService.findAllForCurrentUser(instance.getPid(), authentication.getName(), pageRequest);
+													   Authentication authentication,
+													   Pageable pageable) {
+		return this.reportService.findAllForCurrentUser(instance.getPid(), authentication.getName(), pageable);
 	}
 
 	@GetMapping("/{id}")

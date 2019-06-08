@@ -14,7 +14,4 @@ public class ReportRestFilter {
 	@NotEmpty
 	private String pid;
 
-	private Integer page = 0;
-
-	private Integer size = 15;
 }
