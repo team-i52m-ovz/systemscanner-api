@@ -2,6 +2,7 @@ package com.systemscanner.api.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.systemscanner.api.component.JwtBuilder;
+import com.systemscanner.api.utils.HttpProperties;
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -42,6 +43,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
 											FilterChain chain, Authentication authentication) {
 		response.setHeader(HttpHeaders.AUTHORIZATION, jwtBuilder.buildJWT(authentication));
+		response.setHeader(HttpProperties.HttpHeaders.ROLES, jwtBuilder.buildAuthorities(authentication));
 	}
 
 	@Override

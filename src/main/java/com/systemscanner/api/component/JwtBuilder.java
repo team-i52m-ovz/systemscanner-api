@@ -28,6 +28,7 @@ import static com.systemscanner.api.utils.StringUtils.COMMA;
 
 @Component
 public class JwtBuilder {
+
 	@Value("${api.token.max-age}")
 	private Long tokenMaxAge;
 
@@ -35,11 +36,13 @@ public class JwtBuilder {
 	private String tokenSecret;
 
 	public String buildJWT(Authentication auth) {
-		String authorities = auth.getAuthorities().stream()
+		String authorities = auth.getAuthorities()
+				.stream()
 				.map(GrantedAuthority::getAuthority)
 				.collect(Collectors.joining(COMMA));
 
 		val issuedAt = LocalDateTime.ofInstant(Instant.now(), ZoneOffset.UTC);
+
 		val jwt = Jwts.builder()
 				.setSubject(auth.getName())
 				.claim(AUTHORITIES_KEY, authorities)
@@ -47,7 +50,15 @@ public class JwtBuilder {
 				.setExpiration(Date.from(issuedAt.plusMinutes(tokenMaxAge).toInstant(ZoneOffset.UTC)))
 				.signWith(SignatureAlgorithm.HS256, tokenSecret)
 				.compact();
+
 		return JWT_PREFIX + jwt;
+	}
+
+	public String buildAuthorities(Authentication auth) {
+		return auth.getAuthorities()
+				.stream()
+				.map(GrantedAuthority::getAuthority)
+				.collect(Collectors.joining(COMMA));
 	}
 
 	public Authentication getAuthentication(String token) {
@@ -57,10 +68,12 @@ public class JwtBuilder {
 		Collection<? extends GrantedAuthority> authorities =
 				Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(COMMA))
 						.filter(s -> !s.equals(BLANK))
-						.map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+						.map(SimpleGrantedAuthority::new)
+						.collect(Collectors.toList());
 
 		User principal = new User(claims.getSubject(), BLANK, Collections.emptyList());
 
 		return new UsernamePasswordAuthenticationToken(principal, BLANK, authorities);
 	}
+
 }

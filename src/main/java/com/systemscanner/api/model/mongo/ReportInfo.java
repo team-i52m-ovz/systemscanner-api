@@ -16,4 +16,7 @@ public class ReportInfo {
 	@JsonProperty("Installed Software")
 	private SoftwareInfo softwareInfo;
 
+	@JsonProperty("Operating System")
+	private OperatingSystemInfo operatingSystemInfo;
+
 }

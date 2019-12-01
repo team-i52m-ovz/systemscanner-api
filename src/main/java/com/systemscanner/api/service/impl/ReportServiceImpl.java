@@ -6,7 +6,7 @@ import com.systemscanner.api.model.projection.ScannerInstanceLight;
 import com.systemscanner.api.repository.jpa.ScannerInstanceRepository;
 import com.systemscanner.api.repository.mongo.ReportMongoRepository;
 import com.systemscanner.api.service.ReportService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.function.Predicate;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
 	private final ReportMongoRepository mongoRepository;

@@ -8,6 +8,8 @@ public interface HttpProperties {
 
 		String SCANNER_SECRET = "X-Secret";
 
+		String ROLES = "Roles";
+
 	}
 
 	interface TokenUtils {

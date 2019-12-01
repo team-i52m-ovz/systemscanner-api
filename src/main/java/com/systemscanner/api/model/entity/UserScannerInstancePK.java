@@ -6,24 +6,20 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.Embeddable;
+import java.io.Serializable;
 
 @Data
-@Entity
 @Builder
+@Embeddable
 @NoArgsConstructor
 @AllArgsConstructor
-public class ScannerInstance {
+public class UserScannerInstancePK implements Serializable {
 
-	@Id
-	@Column(length = 50)
-	private String pid;
-
-	@Column(nullable = false, length = 100)
-	private String name;
+	@Column(nullable = false)
+	private Long userId;
 
 	@Column(nullable = false, length = 50)
-	private String securityKey;
+	private String scannerInstancePid;
 
 }

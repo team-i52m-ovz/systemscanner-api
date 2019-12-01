@@ -10,4 +10,6 @@ public interface ReportLight {
 
 	Instant getCreatedAt();
 
+	String getName();
+
 }

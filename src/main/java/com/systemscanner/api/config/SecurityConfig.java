@@ -78,6 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		configuration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CACHE_CONTROL,
 				HttpHeaders.CONTENT_TYPE, HttpProperties.HttpHeaders.SCANNER));
 		configuration.addExposedHeader(HttpHeaders.AUTHORIZATION);
+		configuration.addExposedHeader(HttpProperties.HttpHeaders.ROLES);
 
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
@@ -88,4 +89,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
+
 }
