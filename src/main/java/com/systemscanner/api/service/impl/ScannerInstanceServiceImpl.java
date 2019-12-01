@@ -22,7 +22,7 @@ public class ScannerInstanceServiceImpl implements ScannerInstanceService {
 
 	@Override
 	public Optional<ScannerInstanceLight> findOne(String pid, String username) {
-		return this.scannerInstanceRepository.findOneByUserAndPid(pid, username);
+		return this.scannerInstanceRepository.findOneByUserAndPid(username, pid);
 	}
 
 }
