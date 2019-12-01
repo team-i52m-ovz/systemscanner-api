@@ -26,12 +26,17 @@ public class User {
 	@Column(nullable = false)
 	private String password;
 
+	@Column(nullable = false, length = 40)
+	private String firstName;
+
+	@Column(nullable = false, length = 40)
+	private String lastName;
+
 	@Column(nullable = false, unique = true)
 	private String email;
 
 	@ManyToMany
-	@JoinTable(name = "user_scanner_instance",
-			joinColumns = @JoinColumn(name = "user_id"),
-			inverseJoinColumns = @JoinColumn(name = "scanner_instance_pid"))
-	private Set<ScannerInstance> scannerInstances;
+	@JoinTable(name = "user_role", inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles;
+
 }

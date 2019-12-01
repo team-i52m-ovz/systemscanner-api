@@ -1,18 +1,17 @@
 package com.systemscanner.api.controller;
 
-import com.systemscanner.api.model.dto.NewScannerInstance;
 import com.systemscanner.api.model.projection.ScannerInstanceLight;
 import com.systemscanner.api.service.ScannerInstanceService;
-import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
 import java.util.Set;
 
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping("/scanner-instances")
 public class ScannerInstanceController {
 
@@ -23,11 +22,4 @@ public class ScannerInstanceController {
 		return this.scannerInstanceService.findAllForCurrentUser(authentication.getName());
 	}
 
-	@PostMapping
-	public ResponseEntity<ScannerInstanceLight> addInstance(@Valid @RequestBody NewScannerInstance newScannerInstance,
-															Authentication authentication) {
-		return this.scannerInstanceService.createNewInstance(newScannerInstance, authentication.getName())
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
-	}
 }

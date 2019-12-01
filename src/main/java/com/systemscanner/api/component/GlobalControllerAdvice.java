@@ -21,4 +21,5 @@ public class GlobalControllerAdvice {
 	public ErrorMessage handleIllegalArgumentException(IllegalArgumentException ex) {
 		return () -> String.format("Error: %s", ex.getMessage());
 	}
+
 }

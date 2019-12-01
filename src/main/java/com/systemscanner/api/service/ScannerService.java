@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface ScannerService {
 
-	Optional<String> registerInstance(String scannerSecret);
+	Optional<String> registerInstance(String scannerSecret, String remoteAddress);
 
 	Optional<Report> createReport(ReportInfo reportInfo, String authentication);
 

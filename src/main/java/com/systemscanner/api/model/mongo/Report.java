@@ -20,6 +20,8 @@ public class Report {
 	@Id
 	private String id;
 
+	private String name;
+
 	private String scannerPid;
 
 	private Instant createdAt;

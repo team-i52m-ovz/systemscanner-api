@@ -5,7 +5,7 @@ import com.systemscanner.api.model.entity.User;
 import com.systemscanner.api.model.projection.UserLight;
 import com.systemscanner.api.repository.jpa.UserRepository;
 import com.systemscanner.api.service.SignupService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.val;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.projection.ProjectionFactory;
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SignupServiceImpl implements SignupService {
 
 	private final UserRepository userRepository;
