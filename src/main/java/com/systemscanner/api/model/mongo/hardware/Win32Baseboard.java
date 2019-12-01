@@ -1,4 +1,4 @@
-package com.systemscanner.api.model.mongo;
+package com.systemscanner.api.model.mongo.hardware;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

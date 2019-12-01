@@ -52,4 +52,5 @@ public class ScannerInstanceServiceImpl implements ScannerInstanceService {
 				.securityKey(instance.getToken())
 				.build();
 	}
+
 }

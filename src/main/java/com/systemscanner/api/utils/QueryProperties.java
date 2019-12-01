@@ -7,4 +7,5 @@ public interface QueryProperties {
 		String EMPTY_QUERY = "{}";
 
 	}
+
 }

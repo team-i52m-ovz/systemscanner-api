@@ -1,19 +1,19 @@
 package com.systemscanner.api.model.mongo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.systemscanner.api.model.mongo.software.Software;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReportInfo {
+public class SoftwareInfo {
 
-	@JsonProperty("Hardware")
-	private HardwareInfo hardwareInfo;
-
-	@JsonProperty("Installed Software")
-	private SoftwareInfo softwareInfo;
+	@JsonProperty("Win32_Product")
+	private Set<Software> software;
 
 }

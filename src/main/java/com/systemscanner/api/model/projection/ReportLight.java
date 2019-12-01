@@ -9,4 +9,5 @@ public interface ReportLight {
 	String getScannerPid();
 
 	Instant getCreatedAt();
+
 }

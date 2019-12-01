@@ -5,4 +5,5 @@ public interface UserLight {
 	String getUsername();
 
 	String getEmail();
+
 }

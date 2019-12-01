@@ -37,4 +37,5 @@ public class ReportServiceImpl implements ReportService {
 		return this.mongoRepository.findById(id)
 				.filter(authorized);
 	}
+
 }
