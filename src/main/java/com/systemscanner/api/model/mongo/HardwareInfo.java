@@ -15,7 +15,7 @@ import java.util.Set;
 @AllArgsConstructor
 public class HardwareInfo {
 
-	@JsonProperty("Win32_Baseboard")
+	@JsonProperty("Win32_BaseBoard")
 	private Set<Win32Baseboard> win32Baseboards = Collections.emptySet();
 
 	@JsonProperty("Win32_BIOS")
