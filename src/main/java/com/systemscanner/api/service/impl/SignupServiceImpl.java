@@ -34,4 +34,5 @@ public class SignupServiceImpl implements SignupService {
 				.map(u -> this.projectionFactory.createProjection(UserLight.class, u))
 				.orElseThrow(() -> new DataIntegrityViolationException("Invalid registration form value"));
 	}
+
 }

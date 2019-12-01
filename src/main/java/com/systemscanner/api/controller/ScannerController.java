@@ -1,34 +1,43 @@
 package com.systemscanner.api.controller;
 
-import com.systemscanner.api.model.dto.NewScannerInstance;
-import com.systemscanner.api.model.projection.ScannerInstanceLight;
-import com.systemscanner.api.service.ScannerInstanceService;
+import com.systemscanner.api.model.mongo.ReportInfo;
+import com.systemscanner.api.service.ScannerService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
-import java.util.Set;
+import java.util.function.Function;
 
-@CrossOrigin
+import static com.systemscanner.api.utils.HttpProperties.HttpHeaders.SCANNER;
+import static com.systemscanner.api.utils.HttpProperties.HttpHeaders.SCANNER_SECRET;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/scanner")
 public class ScannerController {
 
-	private final ScannerInstanceService scannerInstanceService;
+	private final ScannerService scannerService;
 
-	@GetMapping("/instances")
-	public Set<ScannerInstanceLight> findAll(Authentication authentication) {
-		return this.scannerInstanceService.findAllForCurrentUser(authentication.getName());
+	@PostMapping
+	public ResponseEntity<?> registerInstance(@RequestHeader(SCANNER_SECRET) String secret) {
+		Function<String, ResponseEntity<?>> setResponseToken = token ->
+				ResponseEntity
+						.noContent()
+						.header(SCANNER, token)
+						.build();
+
+		return this.scannerService.registerInstance(secret)
+				.map(setResponseToken)
+				.orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
 
-	@PostMapping("/instances")
-	public ResponseEntity<ScannerInstanceLight> addInstance(@Valid @RequestBody NewScannerInstance newScannerInstance,
-															Authentication authentication) {
-		return this.scannerInstanceService.createNewInstance(newScannerInstance, authentication.getName())
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
+	@PostMapping("/report")
+	public ResponseEntity<?> createReport(@RequestBody ReportInfo reportInfo,
+										  @RequestHeader(SCANNER) String scannerAuthentication) {
+		return this.scannerService.createReport(reportInfo, scannerAuthentication)
+				.map(r -> ResponseEntity.accepted().build())
+				.orElseGet(() -> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build());
 	}
+
 }

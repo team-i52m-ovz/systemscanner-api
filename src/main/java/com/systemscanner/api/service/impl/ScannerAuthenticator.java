@@ -1,5 +1,6 @@
 package com.systemscanner.api.service.impl;
 
+import com.systemscanner.api.model.entity.ScannerInstance;
 import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Component;
 
@@ -23,4 +24,13 @@ public class ScannerAuthenticator {
 				.filter(parts -> BASIC_AUTH_PARTS.equals(parts.length))
 				.map(parts -> Pair.of(parts[0], parts[1]));
 	}
+
+	public Optional<String> authenticate(ScannerInstance scannerInstance) {
+		return Optional.of(scannerInstance)
+				.map(instance -> String.format("%s:%s", instance.getPid(), instance.getSecurityKey()))
+				.map(credentials -> Base64.getEncoder().encode(credentials.getBytes()))
+				.map(String::new)
+				.map(token -> String.format("%s%s", BASIC_AUTH_PREFIX, token));
+	}
+
 }

@@ -1,4 +1,4 @@
-package com.systemscanner.api.model.mongo;
+package com.systemscanner.api.model.mongo.hardware;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -59,4 +59,5 @@ public class Win32BIOS {
 
 	@JsonProperty("Version")
 	private String version;
+
 }

@@ -3,16 +3,23 @@ package com.systemscanner.api.utils;
 public interface HttpProperties {
 
 	interface HttpHeaders {
-		String SCANNER_PID = "scanner-pid";
-		String SCANNER_TOKEN = "scanner-token";
+
 		String SCANNER = "X-Scanner";
+
+		String SCANNER_SECRET = "X-Secret";
+
 	}
 
 	interface TokenUtils {
+
 		String JWT_PREFIX = "Bearer ";
+
 		String AUTHORITIES_KEY = "roles";
+
 		String BASIC_AUTH_PREFIX = "Basic ";
+
 		Integer BASIC_AUTH_PARTS = 2;
+
 	}
 
 	interface PublicEndpoints {
@@ -28,8 +35,10 @@ public interface HttpProperties {
 				"/**/public/**"
 		};
 
-		String RAT_ENDPOINTS = "/rat/**";
+		String SCANNER_ENDPOINTS = "/scanner/**";
 
 		String AUTH_ENDPOINTS = "/auth/**";
+
 	}
+
 }

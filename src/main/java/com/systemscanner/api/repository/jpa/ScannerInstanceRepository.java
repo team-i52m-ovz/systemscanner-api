@@ -24,4 +24,5 @@ public interface ScannerInstanceRepository extends JpaRepository<ScannerInstance
 	Optional<ScannerInstanceLight> findOneByUserAndPid(@Param("userUid") String userUid, @Param("pid") String pid);
 
 	Optional<ScannerInstance> findByPidAndSecurityKey(String pid, String securityKey);
+
 }

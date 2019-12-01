@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.addFilterBefore(jwtAuthorizationFilter, JwtAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers(AUTH_ENDPOINTS, RAT_ENDPOINTS)
+				.antMatchers(AUTH_ENDPOINTS, SCANNER_ENDPOINTS)
 				.permitAll()
 				.antMatchers(SWAGGER_ENDPOINTS)
 				.permitAll()
@@ -76,8 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		configuration.setAllowedMethods(allowedHttpMethods);
 		configuration.setAllowCredentials(true);
 		configuration.setAllowedHeaders(Arrays.asList(HttpHeaders.AUTHORIZATION, HttpHeaders.CACHE_CONTROL,
-				HttpHeaders.CONTENT_TYPE, HttpProperties.HttpHeaders.SCANNER_PID, HttpProperties.HttpHeaders.SCANNER_TOKEN,
-				HttpProperties.HttpHeaders.SCANNER));
+				HttpHeaders.CONTENT_TYPE, HttpProperties.HttpHeaders.SCANNER));
 		configuration.addExposedHeader(HttpHeaders.AUTHORIZATION);
 
 		final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

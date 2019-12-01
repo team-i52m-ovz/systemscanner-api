@@ -5,7 +5,9 @@ import com.systemscanner.api.model.mongo.ReportInfo;
 
 import java.util.Optional;
 
-public interface RatService {
+public interface ScannerService {
+
+	Optional<String> registerInstance(String scannerSecret);
 
 	Optional<Report> createReport(ReportInfo reportInfo, String authentication);
 

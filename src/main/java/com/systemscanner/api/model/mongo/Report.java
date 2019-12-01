@@ -26,4 +26,5 @@ public class Report {
 
 	@JsonUnwrapped
 	private ReportInfo details;
+
 }
