@@ -6,6 +6,7 @@ import com.systemscanner.api.service.ScannerInstanceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -17,6 +18,11 @@ public class ScannerInstanceServiceImpl implements ScannerInstanceService {
 	@Override
 	public Set<ScannerInstanceLight> findAllForCurrentUser(String username) {
 		return this.scannerInstanceRepository.findAllForUser(username);
+	}
+
+	@Override
+	public Optional<ScannerInstanceLight> findOne(String pid, String username) {
+		return this.scannerInstanceRepository.findOneByUserAndPid(pid, username);
 	}
 
 }
