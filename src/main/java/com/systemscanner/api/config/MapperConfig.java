@@ -27,4 +27,5 @@ public class MapperConfig {
 	public ProjectionFactory projectionFactory() {
 		return new SpelAwareProxyProjectionFactory();
 	}
+
 }

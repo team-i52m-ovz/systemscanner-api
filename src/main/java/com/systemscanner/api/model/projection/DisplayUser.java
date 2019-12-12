@@ -8,4 +8,6 @@ public interface DisplayUser {
 
 	String getLastName();
 
+	String getEmail();
+
 }
