@@ -3,9 +3,11 @@ package com.systemscanner.api;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.data.projection.ProjectionFactory;
-import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
+@EnableScheduling
 @SpringBootApplication
 public class ApiApplication {
 
@@ -14,8 +16,8 @@ public class ApiApplication {
 	}
 
 	@Bean
-	public ProjectionFactory projectionFactory() {
-		return new SpelAwareProxyProjectionFactory();
+	public MailSender mailSender() {
+		return new JavaMailSenderImpl();
 	}
 
 }

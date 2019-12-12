@@ -21,6 +21,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByUsernameOrEmail(@Param("uid") String uid);
 
 	@Query("SELECT user FROM User user" +
+			" LEFT JOIN FETCH user.roles" +
 			" JOIN UserScannerInstance usi ON usi.key.userId = user.id" +
 			" AND usi.key.scannerInstancePid = :scannerInstancePid")
 	Set<DisplayUser> findAllByScannerInstancePid(@Param("scannerInstancePid") String scannerInstancePid);
